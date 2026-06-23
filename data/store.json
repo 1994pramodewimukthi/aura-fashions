@@ -1,0 +1,154 @@
+{
+  "settings": {
+    "whatsappNumber": "94770000000",
+    "instagram": "https://instagram.com/buchas.lk",
+    "tiktok": "https://tiktok.com/@buchas.lk",
+    "facebook": "https://facebook.com/buchas.lk",
+    "phone": "+94 77 000 0000",
+    "address": "No. 14, Galle Road, Colombo 03"
+  },
+  "categories": [
+    {
+      "id": "cat-men",
+      "name": "Men",
+      "subCategories": [
+        "Oversized Tees",
+        "Jackets",
+        "Trousers"
+      ]
+    },
+    {
+      "id": "cat-women",
+      "name": "Women",
+      "subCategories": [
+        "Dresses",
+        "Tops",
+        "Co-ords"
+      ]
+    },
+    {
+      "id": "cat-accessories",
+      "name": "Accessories",
+      "subCategories": [
+        "Caps",
+        "Bags"
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "p-001",
+      "slug": "ash-oversized-tee",
+      "name": "Ash Oversized Tee",
+      "category": "Men",
+      "subCategory": "Oversized Tees",
+      "price": 4500,
+      "description": "Heavyweight 280gsm cotton, garment-dyed for a faded, lived-in finish. Drop shoulder, boxy cut.",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL",
+        "XXL"
+      ],
+      "colors": [
+        "Ash Grey",
+        "Black"
+      ],
+      "stock": 24,
+      "featured": true
+    },
+    {
+      "id": "p-002",
+      "slug": "clay-field-jacket",
+      "name": "Clay Field Jacket",
+      "category": "Men",
+      "subCategory": "Jackets",
+      "price": 12500,
+      "description": "Cotton-canvas field jacket with brass hardware and a rust-dye wash, cut for layering.",
+      "images": [
+        "https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "sizes": [
+        "M",
+        "L",
+        "XL"
+      ],
+      "colors": [
+        "Clay",
+        "Olive"
+      ],
+      "stock": 10,
+      "featured": true
+    },
+    {
+      "id": "p-003",
+      "slug": "moss-co-ord-set",
+      "name": "Moss Co-ord Set",
+      "category": "Women",
+      "subCategory": "Co-ords",
+      "price": 9800,
+      "description": "Cropped shirt and wide-leg trouser set in brushed moss twill.",
+      "images": [
+        "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Moss"
+      ],
+      "stock": 8,
+      "featured": true
+    },
+    {
+      "id": "p-004",
+      "slug": "bone-cap",
+      "name": "Bone Panel Cap",
+      "category": "Accessories",
+      "subCategory": "Caps",
+      "price": 2200,
+      "description": "Six-panel cap in raw bone canvas, embroidered BUCHA'S wordmark.",
+      "images": [
+        "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200&auto=format&fit=crop"
+      ],
+      "sizes": [
+        "One Size"
+      ],
+      "colors": [
+        "Bone",
+        "Black"
+      ],
+      "stock": 30,
+      "featured": false
+    },
+    {
+      "id": "doaqhh6l8",
+      "slug": "lalala",
+      "name": "lalala",
+      "category": "Men",
+      "subCategory": "ertyuiop",
+      "price": 1445555,
+      "description": "",
+      "images": [
+        "http://localhost:3000/admin"
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L"
+      ],
+      "colors": [
+        "Black"
+      ],
+      "stock": 10,
+      "featured": true
+    }
+  ]
+}
