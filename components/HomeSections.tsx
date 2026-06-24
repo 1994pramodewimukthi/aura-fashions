@@ -81,7 +81,7 @@ export function HorizontalProductRow({ title, products, aspectRatio = "aspect-[3
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute top-4 left-4 bg-bone border border-ink rounded-full px-4 py-2 -rotate-3 shadow-md">
-                  <span className="font-display text-sm">LKR {p.price.toLocaleString()}</span>
+                  <span className="font-display text-sm">LKR {p.price.toLocaleString('en-US')}</span>
                 </div>
               </div>
               <div className="mt-6 shrink-0 flex justify-between items-start">
@@ -127,7 +127,7 @@ export function MarqueeProductRow({ title, products, aspectRatio = "aspect-[3/4]
                         className="h-full w-full object-cover transition-transform duration-700 group-hover/item:scale-105"
                       />
                       <div className="absolute top-4 left-4 bg-bone border border-ink rounded-full px-4 py-2 -rotate-3 shadow-md opacity-0 group-hover/item:opacity-100 transition-opacity">
-                        <span className="font-display text-sm">LKR {p.price.toLocaleString()}</span>
+                        <span className="font-display text-sm">LKR {p.price.toLocaleString('en-US')}</span>
                       </div>
                     </div>
                     <div className="mt-6 shrink-0 flex justify-between items-start">
@@ -203,7 +203,7 @@ export function FooterSection() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-steel/20 flex justify-between items-center text-xs text-steel">
-        <p>© {new Date().getFullYear()} Bucha&apos;s. All rights reserved.</p>
+        <p suppressHydrationWarning>© {new Date().getFullYear()} Bucha&apos;s. All rights reserved.</p>
         <p>Premium Quality</p>
       </div>
     </footer>

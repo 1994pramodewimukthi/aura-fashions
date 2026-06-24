@@ -15,17 +15,29 @@ export function VirtualTryOn({ product }: { product: Product }) {
   const dragStart = useRef({ x: 0, y: 0 });
 
   async function startCamera() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("Camera access is not supported by your browser in this context. Note: Camera try-on requires a secure connection (HTTPS) or localhost.");
+      return;
+    }
     try {
-      const mediaStream = await navigator.mediaDevices.getUserMedia({ 
-        video: { facingMode: 'user' } 
-      });
+      let mediaStream;
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ 
+          video: { facingMode: 'user' } 
+        });
+      } catch (firstErr) {
+        console.warn("Failed to start with front camera, trying fallback...", firstErr);
+        mediaStream = await navigator.mediaDevices.getUserMedia({ 
+          video: true 
+        });
+      }
       setStream(mediaStream);
       setIsOpen(true);
       // Reset positioning
       setPosition({ x: window.innerWidth / 2 - 100, y: window.innerHeight / 2 - 150 });
       setScale(1);
     } catch (err) {
-      alert("Could not access the camera. Please ensure permissions are granted.");
+      alert("Could not access the camera. Please ensure camera permissions are granted in your browser settings.");
       console.error(err);
     }
   }
@@ -41,6 +53,9 @@ export function VirtualTryOn({ product }: { product: Product }) {
   useEffect(() => {
     if (isOpen && videoRef.current && stream) {
       videoRef.current.srcObject = stream;
+      videoRef.current.play().catch(err => {
+        console.error("Failed to play video stream:", err);
+      });
     }
     return () => {
       if (stream) {
@@ -48,6 +63,17 @@ export function VirtualTryOn({ product }: { product: Product }) {
       }
     };
   }, [isOpen, stream]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   // Dragging logic
   function handlePointerDown(e: React.PointerEvent) {
@@ -85,7 +111,8 @@ export function VirtualTryOn({ product }: { product: Product }) {
             <h3 className="font-display text-white text-xl uppercase tracking-wider">Virtual Mirror</h3>
             <button 
               onClick={stopCamera}
-              className="bg-white/20 hover:bg-white/40 text-white rounded-full w-10 h-10 flex items-center justify-center backdrop-blur-md transition-colors"
+              className="bg-white/20 hover:bg-white/40 text-white rounded-full w-12 h-12 flex items-center justify-center text-2xl backdrop-blur-md transition-colors"
+              aria-label="Close virtual mirror"
             >
               ×
             </button>

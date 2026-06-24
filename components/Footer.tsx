@@ -19,7 +19,7 @@ export function Footer() {
           <p>TikTok — @buchas.lk</p>
         </div>
       </div>
-      <div className="border-t border-bone/10 py-6 text-center text-xs text-bone/50 uppercase tracking-widest2">
+      <div suppressHydrationWarning className="border-t border-bone/10 py-6 text-center text-xs text-bone/50 uppercase tracking-widest2">
         © {new Date().getFullYear()} BUCHA&apos;S. All rights reserved.
       </div>
     </footer>

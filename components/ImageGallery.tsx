@@ -23,13 +23,13 @@ export function ImageGallery({ images, alt }: { images: string[]; alt: string })
           <>
             <button 
               onClick={() => setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))}
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-bone/80 text-ink rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-bone shadow-md"
+              className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-bone/80 text-ink rounded-full flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-bone shadow-md"
             >
               ←
             </button>
             <button 
               onClick={() => setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))}
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-bone/80 text-ink rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-bone shadow-md"
+              className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-bone/80 text-ink rounded-full flex items-center justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity hover:bg-bone shadow-md"
             >
               →
             </button>

@@ -39,16 +39,23 @@ export default function CartPage() {
           {lines.map((line, i) => (
             <div
               key={`${line.productId}-${line.size}-${line.color}`}
-              className="flex gap-5 items-center border-b border-ink/10 pb-6"
+              className="flex gap-4 sm:gap-5 items-start sm:items-center border-b border-ink/10 pb-6"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={line.image} alt={line.name} className="w-24 h-28 object-cover bg-ink/5" />
-              <div className="flex-1">
-                <p className="font-display text-lg">{line.name}</p>
-                <p className="text-xs uppercase tracking-widest2 text-steel mt-1">
-                  {line.color} / {line.size}
-                </p>
-                <div className="flex items-center gap-3 mt-3">
+              <img src={line.image} alt={line.name} className="w-20 h-24 sm:w-24 sm:h-28 object-cover bg-ink/5 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-1">
+                  <div>
+                    <p className="font-display text-base sm:text-lg truncate">{line.name}</p>
+                    <p className="text-xs uppercase tracking-widest2 text-steel mt-1">
+                      {line.color} / {line.size}
+                    </p>
+                  </div>
+                  <p className="font-display text-base sm:text-lg text-clay sm:text-ink shrink-0 mt-1 sm:mt-0">
+                    LKR {(line.price * line.quantity).toLocaleString('en-US')}
+                  </p>
+                </div>
+                <div className="flex items-center gap-4 mt-4 sm:mt-3">
                   <div className="flex items-center gap-3 border border-ink/20 rounded-full px-2">
                     <button
                       onClick={() => updateQuantity(i, line.quantity - 1)}
@@ -74,15 +81,12 @@ export default function CartPage() {
                   </button>
                 </div>
               </div>
-              <p className="font-display text-lg">
-                LKR {(line.price * line.quantity).toLocaleString()}
-              </p>
             </div>
           ))}
 
           <div className="flex items-center justify-between pt-4">
             <p className="font-display text-2xl">Total</p>
-            <p className="font-display text-2xl text-clay">LKR {totalPrice().toLocaleString()}</p>
+            <p className="font-display text-2xl text-clay">LKR {totalPrice().toLocaleString('en-US')}</p>
           </div>
 
           <a

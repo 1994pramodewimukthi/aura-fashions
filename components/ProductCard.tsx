@@ -21,7 +21,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute top-3 left-3 bg-bone border border-ink rounded-full px-3 py-1 -rotate-6 shadow-sm">
-            <span className="font-display text-xs">LKR {product.price.toLocaleString()}</span>
+            <span className="font-display text-xs">LKR {product.price.toLocaleString('en-US')}</span>
           </div>
         </div>
         <div className="mt-4 flex items-start justify-between">

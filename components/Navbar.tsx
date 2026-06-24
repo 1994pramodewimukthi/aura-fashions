@@ -7,7 +7,20 @@ import { useCart } from '@/lib/cart-store';
 export function Navbar() {
   const totalItems = useCart((s) => s.totalItems());
   const [mounted, setMounted] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <header className="sticky top-0 z-50 bg-bone/95 backdrop-blur border-b border-ink/10 group/header">
@@ -101,17 +114,92 @@ export function Navbar() {
           </Link>
         </nav>
 
-        <Link
-          href="/cart"
-          className="relative font-display text-sm uppercase tracking-widest2 border border-ink rounded-full px-5 py-2 hover:bg-ink hover:text-bone transition-colors z-10"
-        >
-          Cart
-          {mounted && totalItems > 0 && (
-            <span className="absolute -top-2 -right-2 bg-clay text-bone text-xs rounded-full w-5 h-5 flex items-center justify-center font-body">
-              {totalItems}
-            </span>
-          )}
-        </Link>
+        <div className="flex items-center gap-4 z-20 relative">
+          <Link
+            href="/cart"
+            className="relative font-display text-sm uppercase tracking-widest2 border border-ink rounded-full px-5 py-2 hover:bg-ink hover:text-bone transition-colors"
+          >
+            Cart
+            {mounted && totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-clay text-bone text-xs rounded-full w-5 h-5 flex items-center justify-center font-body">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-ink hover:text-clay transition-colors flex items-center justify-center"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            {isMobileMenuOpen ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Menu Drawer */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 top-20 bg-bone z-40 md:hidden flex flex-col overflow-y-auto border-t border-ink/10 transition-all duration-300 ease-out">
+            <div className="flex-1 px-6 py-10 flex flex-col justify-between">
+              <nav className="flex flex-col gap-8 text-2xl font-display uppercase tracking-wider">
+                <Link 
+                  href="/shop" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="hover:text-clay transition-colors py-2 border-b border-ink/5"
+                >
+                  Shop All
+                </Link>
+                
+                {/* Men Section */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-steel uppercase tracking-widest2">Men</span>
+                  <div className="flex flex-col gap-3 pl-4 font-body text-lg normal-case tracking-normal text-ink">
+                    <Link href="/shop?category=Men" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">All Men</Link>
+                    <Link href="/shop?category=Men&sub=Oversized Tees" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Oversized Tees</Link>
+                    <Link href="/shop?category=Men&sub=Jackets" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Jackets</Link>
+                    <Link href="/shop?category=Men&sub=Trousers" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Trousers</Link>
+                  </div>
+                </div>
+
+                {/* Women Section */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-steel uppercase tracking-widest2">Women</span>
+                  <div className="flex flex-col gap-3 pl-4 font-body text-lg normal-case tracking-normal text-ink">
+                    <Link href="/shop?category=Women" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">All Women</Link>
+                    <Link href="/shop?category=Women&sub=Dresses" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Dresses</Link>
+                    <Link href="/shop?category=Women&sub=Tops" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Tops</Link>
+                    <Link href="/shop?category=Women&sub=Co-ords" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Co-ords</Link>
+                  </div>
+                </div>
+
+                {/* Accessories Section */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-steel uppercase tracking-widest2">Accessories</span>
+                  <div className="flex flex-col gap-3 pl-4 font-body text-lg normal-case tracking-normal text-ink">
+                    <Link href="/shop?category=Accessories" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">All Accessories</Link>
+                    <Link href="/shop?category=Accessories&sub=Caps" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Caps</Link>
+                    <Link href="/shop?category=Accessories&sub=Bags" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-clay transition-colors">Bags</Link>
+                  </div>
+                </div>
+              </nav>
+
+              <div className="mt-12 pt-8 border-t border-ink/10 text-xs text-steel uppercase tracking-widest2 flex flex-col gap-2">
+                <p>No. 14, Galle Road, Colombo 03</p>
+                <p>+94 77 000 0000</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );

@@ -435,7 +435,7 @@ export default function AdminDashboardPage() {
                     <div>
                       <p className="font-display leading-tight">{p.name}</p>
                       <p className="text-xs text-steel uppercase tracking-widest2 mt-1">
-                        {p.category} / {p.subCategory} — LKR {p.price.toLocaleString()}
+                        {p.category} / {p.subCategory} — LKR {p.price.toLocaleString('en-US')}
                       </p>
                     </div>
                   </div>

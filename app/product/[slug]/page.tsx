@@ -26,7 +26,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </p>
           <h1 className="font-display text-4xl md:text-5xl leading-tight">{product.name}</h1>
           <p className="font-display text-2xl text-clay mt-4">
-            LKR {product.price.toLocaleString()}
+            LKR {product.price.toLocaleString('en-US')}
           </p>
           <p className="font-accent italic text-ink/70 mt-6 max-w-md">{product.description}</p>
 
