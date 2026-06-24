@@ -100,6 +100,55 @@ export function HorizontalProductRow({ title, products, aspectRatio = "aspect-[3
   );
 }
 
+export function MarqueeProductRow({ title, products, aspectRatio = "aspect-[3/4]" }: { title: string; products: Product[]; aspectRatio?: string }) {
+  // Duplicate the products so the marquee fills the screen and loops seamlessly
+  const displayProducts = products.length < 4 ? [...products, ...products, ...products, ...products] : [...products, ...products];
+
+  return (
+    <section className="w-full flex flex-col bg-bone pt-16 pb-8 md:pt-24 md:pb-12 border-b border-ink/10 overflow-hidden">
+      <div className="px-6 md:px-10 mb-8 shrink-0 flex justify-between items-end relative z-10">
+        <h2 className="font-display text-4xl md:text-6xl text-ink uppercase tracking-tight">{title}</h2>
+        <Link href="/shop" className="text-sm font-bold uppercase tracking-widest2 text-ink hover:text-clay transition-colors">
+          View all →
+        </Link>
+      </div>
+      
+      <div className="w-full overflow-hidden pb-8 group">
+        <div className="marquee-track group-hover:[animation-play-state:paused]" style={{ animationDuration: '30s' }}>
+          {[0, 1].map((rep) => (
+            <div key={rep} className="flex shrink-0 gap-6 md:gap-10 pr-6 md:pr-10">
+              {displayProducts.map((p, i) => (
+                <div key={`${p.id}-${rep}-${i}`} className="w-[70vw] md:w-[25vw] shrink-0">
+                  <Link href={`/product/${p.slug}`} className="block flex flex-col group/item">
+                    <div className={`relative ${aspectRatio} overflow-hidden bg-ink/5 rounded-lg`}>
+                      <img
+                        src={p.images[0]}
+                        alt={p.name}
+                        className="h-full w-full object-cover transition-transform duration-700 group-hover/item:scale-105"
+                      />
+                      <div className="absolute top-4 left-4 bg-bone border border-ink rounded-full px-4 py-2 -rotate-3 shadow-md opacity-0 group-hover/item:opacity-100 transition-opacity">
+                        <span className="font-display text-sm">LKR {p.price.toLocaleString()}</span>
+                      </div>
+                    </div>
+                    <div className="mt-6 shrink-0 flex justify-between items-start">
+                      <div>
+                        <p className="font-display text-2xl md:text-3xl leading-tight text-ink group-hover/item:text-clay transition-colors">{p.name}</p>
+                        <p className="text-sm uppercase tracking-widest2 text-steel mt-2">
+                          {p.category} / {p.subCategory}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export function BannerSection({ image, title, buttonText, link }: { image: string, title: string, buttonText: string, link: string }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({

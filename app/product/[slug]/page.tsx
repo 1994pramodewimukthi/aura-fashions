@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { readStore } from '@/lib/data';
 import { AddToCartPanel } from '@/components/AddToCartPanel';
+import { ImageGallery } from '@/components/ImageGallery';
+import { VirtualTryOn } from '@/components/VirtualTryOn';
 
 export function generateStaticParams() {
   const { products } = readStore();
@@ -17,10 +19,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
       <div className="grid md:grid-cols-2 gap-12 md:gap-16">
-        <div className="aspect-[4/5] overflow-hidden bg-ink/5">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
-        </div>
+        <ImageGallery images={product.images} alt={product.name} />
         <div>
           <p className="text-xs uppercase tracking-widest2 text-steel mb-3">
             {product.category} / {product.subCategory}
@@ -33,6 +32,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
           <div className="mt-10">
             <AddToCartPanel product={product} />
+            <VirtualTryOn product={product} />
           </div>
         </div>
       </div>

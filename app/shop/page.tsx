@@ -18,6 +18,8 @@ function ShopContent() {
   const categoryParam = searchParams.get('category');
   const [products, setProducts] = useState<Product[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(categoryParam);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'price-asc' | 'price-desc'>('newest');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,34 +38,63 @@ function ShopContent() {
     [products]
   );
 
-  const filtered = activeCategory
-    ? products.filter((p) => p.category === activeCategory)
-    : products;
+  const filtered = products.filter(p => {
+    if (activeCategory && p.category !== activeCategory) return false;
+    if (searchQuery && !p.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    return true;
+  }).sort((a, b) => {
+    if (sortOrder === 'price-asc') return a.price - b.price;
+    if (sortOrder === 'price-desc') return b.price - a.price;
+    return 0;
+  });
 
   return (
     <main className="max-w-7xl mx-auto px-6 md:px-10 py-16">
       <h1 className="font-display text-4xl md:text-6xl mb-8">Shop</h1>
 
-      <div className="flex flex-wrap gap-3 mb-12">
-        <button
-          onClick={() => setActiveCategory(null)}
-          className={`text-sm uppercase tracking-widest2 rounded-full px-5 py-2 border transition-colors ${
-            !activeCategory ? 'bg-ink text-bone border-ink' : 'border-ink/20 hover:border-ink'
-          }`}
-        >
-          All
-        </button>
-        {categories.map((cat) => (
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-12">
+        <div className="flex flex-wrap gap-3">
           <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
+            onClick={() => setActiveCategory(null)}
             className={`text-sm uppercase tracking-widest2 rounded-full px-5 py-2 border transition-colors ${
-              activeCategory === cat ? 'bg-ink text-bone border-ink' : 'border-ink/20 hover:border-ink'
+              !activeCategory ? 'bg-ink text-bone border-ink' : 'border-ink/20 hover:border-ink'
             }`}
           >
-            {cat}
+            All
           </button>
-        ))}
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`text-sm uppercase tracking-widest2 rounded-full px-5 py-2 border transition-colors ${
+                activeCategory === cat ? 'bg-ink text-bone border-ink' : 'border-ink/20 hover:border-ink'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="border border-ink/20 rounded-full px-5 py-2 text-sm bg-transparent outline-none focus:border-ink w-full sm:w-auto"
+          />
+          <div className="relative w-full sm:w-auto">
+            <select
+              value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value as any)}
+              className="w-full border border-ink/20 rounded-full px-5 py-2 text-sm bg-transparent outline-none focus:border-ink appearance-none pr-10 cursor-pointer"
+            >
+              <option value="newest" className="bg-[#111110] text-[#F1ECE2]">Newest Arrivals</option>
+              <option value="price-asc" className="bg-[#111110] text-[#F1ECE2]">Price: Low to High</option>
+              <option value="price-desc" className="bg-[#111110] text-[#F1ECE2]">Price: High to Low</option>
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-xs">▼</div>
+          </div>
+        </div>
       </div>
 
       {loading ? (
