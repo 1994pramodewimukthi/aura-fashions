@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
     price: Number(body.price) || 0,
     description: body.description || '',
     images: body.images?.length ? body.images : ['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop'],
+    fitOnImage: body.fitOnImage || '',
     sizes: body.sizes?.length ? body.sizes : ['One Size'],
     colors: body.colors?.length ? body.colors : ['Default'],
     stock: Number(body.stock) || 0,

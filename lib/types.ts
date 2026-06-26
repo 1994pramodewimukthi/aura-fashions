@@ -7,6 +7,7 @@ export interface Product {
   price: number;
   description: string;
   images: string[];
+  fitOnImage?: string;
   sizes: string[];
   colors: string[];
   stock: number;

@@ -95,6 +95,12 @@ export function VirtualTryOn({ product }: { product: Product }) {
     e.currentTarget.releasePointerCapture(e.pointerId);
   }
 
+  const tryOnImage = product.fitOnImage || product.images[0];
+  const isTransparent = tryOnImage?.startsWith('data:image/png') || 
+                        tryOnImage?.startsWith('data:image/webp') || 
+                        tryOnImage?.toLowerCase().endsWith('.png') || 
+                        tryOnImage?.toLowerCase().endsWith('.webp');
+
   return (
     <>
       <button 
@@ -142,9 +148,9 @@ export function VirtualTryOn({ product }: { product: Product }) {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
-                src={product.images[0]} 
+                src={tryOnImage} 
                 alt="Try on item" 
-                className="w-full h-auto drop-shadow-2xl opacity-90 mix-blend-multiply pointer-events-none" 
+                className={`w-full h-auto drop-shadow-2xl opacity-90 pointer-events-none ${isTransparent ? 'mix-blend-normal' : 'mix-blend-multiply'}`} 
               />
               {/* Outline helper to show it's draggable */}
               <div className="absolute inset-0 border-2 border-dashed border-white/50 pointer-events-none" />

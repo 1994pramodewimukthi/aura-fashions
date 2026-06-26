@@ -22,7 +22,7 @@ export default function AdminDashboardPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [categories, setCategories] = useState<CategoryEntry[]>([]);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState({ ...emptyForm, fitOnImage: '' });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [tab, setTab] = useState<'products' | 'settings' | 'categories'>('products');
   const [savedMsg, setSavedMsg] = useState('');
@@ -60,7 +60,7 @@ export default function AdminDashboardPage() {
   }
 
   function resetForm() {
-    setForm(emptyForm);
+    setForm({ ...emptyForm, fitOnImage: '' });
     setEditingId(null);
   }
 
@@ -72,6 +72,7 @@ export default function AdminDashboardPage() {
       price: String(p.price),
       description: p.description,
       images: p.images.join('\n'),
+      fitOnImage: p.fitOnImage || '',
       sizes: p.sizes.join(', '),
       colors: p.colors.join(', '),
       stock: String(p.stock),
@@ -89,6 +90,7 @@ export default function AdminDashboardPage() {
       price: Number(form.price),
       description: form.description,
       images: form.images.split('\n').map((s) => s.trim()).filter(Boolean),
+      fitOnImage: form.fitOnImage || '',
       sizes: form.sizes.split(',').map((s) => s.trim()).filter(Boolean),
       colors: form.colors.split(',').map((s) => s.trim()).filter(Boolean),
       stock: Number(form.stock),
@@ -206,10 +208,54 @@ export default function AdminDashboardPage() {
         const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, width, height);
         
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+        const isPngOrWebp = file.type === 'image/png' || file.type === 'image/webp' || file.type === 'image/gif';
+        const dataUrl = isPngOrWebp 
+          ? canvas.toDataURL('image/png') 
+          : canvas.toDataURL('image/jpeg', 0.8);
         setForm(prev => ({ 
           ...prev, 
           images: prev.images ? prev.images + '\n' + dataUrl : dataUrl 
+        }));
+        
+        // Reset the file input so the same file can be uploaded again if needed
+        e.target.value = '';
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function handleFitOnImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        let width = img.width;
+        let height = img.height;
+        
+        if (width > MAX_WIDTH) {
+          height = height * (MAX_WIDTH / width);
+          width = MAX_WIDTH;
+        }
+        
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        const isPngOrWebp = file.type === 'image/png' || file.type === 'image/webp' || file.type === 'image/gif';
+        const dataUrl = isPngOrWebp 
+          ? canvas.toDataURL('image/png') 
+          : canvas.toDataURL('image/jpeg', 0.8);
+        setForm(prev => ({ 
+          ...prev, 
+          fitOnImage: dataUrl 
         }));
         
         // Reset the file input so the same file can be uploaded again if needed
@@ -346,6 +392,21 @@ export default function AdminDashboardPage() {
                   onChange={(e) => setForm({ ...form, images: e.target.value })}
                   className="w-full border-t border-ink/10 pt-2 mt-2 bg-transparent outline-none"
                   rows={3}
+                />
+              </div>
+              <div className="flex flex-col gap-2 p-3 border border-ink/20 rounded-lg bg-bone">
+                <label className="text-xs uppercase tracking-widest2 text-steel">Upload Fit-On Image OR Paste Link (Bg-Removed PNG)</label>
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={handleFitOnImageUpload}
+                  className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-display file:bg-ink file:text-bone hover:file:bg-clay cursor-pointer"
+                />
+                <input
+                  placeholder="Fit-On Image URL"
+                  value={form.fitOnImage}
+                  onChange={(e) => setForm({ ...form, fitOnImage: e.target.value })}
+                  className="w-full border-t border-ink/10 pt-2 mt-2 bg-transparent outline-none text-sm text-ink"
                 />
               </div>
               <input
