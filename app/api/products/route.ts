@@ -3,7 +3,8 @@ import { readStore, writeStore, slugify } from '@/lib/data';
 import { ADMIN_COOKIE } from '@/lib/auth';
 import type { Product } from '@/lib/types';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  req.cookies.get('dummy-no-cache');
   const store = readStore();
   return NextResponse.json(store.products);
 }

@@ -24,10 +24,14 @@ export function buildWhatsAppUrl(lines: CartLine[], phoneNumber: string): string
   message += `Please confirm availability and delivery details. Thank you!`;
 
   // Sanitizing phone number: remove all non-digits
-  let sanitizedPhone = phoneNumber.replace(/\D/g, '');
+  const phone = phoneNumber || '94765245277';
+  let sanitizedPhone = phone.replace(/\D/g, '');
   // Auto-prefix Sri Lankan country code (94) if entered in local 10-digit format starting with 0
   if (sanitizedPhone.startsWith('0') && sanitizedPhone.length === 10) {
     sanitizedPhone = '94' + sanitizedPhone.substring(1);
+  } else if (sanitizedPhone.length === 9) {
+    // Sri Lankan mobile number without leading 0 or country code (e.g. 765245277)
+    sanitizedPhone = '94' + sanitizedPhone;
   }
 
   const encoded = encodeURIComponent(message);

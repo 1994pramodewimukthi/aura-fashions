@@ -7,14 +7,18 @@ import { buildWhatsAppUrl } from '@/lib/whatsapp';
 
 export default function CartPage() {
   const { lines, removeLine, updateQuantity, totalPrice } = useCart();
-  const [whatsappNumber, setWhatsappNumber] = useState('94770000000');
+  const [whatsappNumber, setWhatsappNumber] = useState('94765245277');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    fetch('/api/settings')
+    fetch('/api/settings', { cache: 'no-store' })
       .then((res) => res.json())
-      .then((data) => setWhatsappNumber(data.settings.whatsappNumber))
+      .then((data) => {
+        if (data?.settings?.whatsappNumber) {
+          setWhatsappNumber(data.settings.whatsappNumber);
+        }
+      })
       .catch(() => {});
   }, []);
 

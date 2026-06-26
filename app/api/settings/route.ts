@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readStore, writeStore } from '@/lib/data';
 import { ADMIN_COOKIE } from '@/lib/auth';
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  req.cookies.get('dummy-no-cache');
   const store = readStore();
   return NextResponse.json({ settings: store.settings, categories: store.categories });
 }
