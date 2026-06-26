@@ -64,21 +64,27 @@ export default function AdminDashboardPage() {
     setEditingId(null);
   }
 
-  function loadIntoForm(p: Product) {
-    setForm({
-      name: p.name,
-      category: p.category,
-      subCategory: p.subCategory,
-      price: String(p.price),
-      description: p.description,
-      images: p.images.join('\n'),
-      fitOnImage: p.fitOnImage || '',
-      sizes: p.sizes.join(', '),
-      colors: p.colors.join(', '),
-      stock: String(p.stock),
-      featured: p.featured
-    });
-    setEditingId(p.id);
+  async function loadIntoForm(p: Product) {
+    try {
+      const res = await fetch(`/api/products/${p.id}`);
+      const fullProduct = await res.json();
+      setForm({
+        name: fullProduct.name,
+        category: fullProduct.category,
+        subCategory: fullProduct.subCategory,
+        price: String(fullProduct.price),
+        description: fullProduct.description,
+        images: fullProduct.images.join('\n'),
+        fitOnImage: fullProduct.fitOnImage || '',
+        sizes: fullProduct.sizes.join(', '),
+        colors: fullProduct.colors.join(', '),
+        stock: String(fullProduct.stock),
+        featured: fullProduct.featured
+      });
+      setEditingId(fullProduct.id);
+    } catch (err) {
+      console.error("Failed to load product details:", err);
+    }
   }
 
   async function handleSubmit(e: FormEvent) {

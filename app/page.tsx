@@ -3,7 +3,7 @@ import { readStore } from '@/lib/data';
 
 export default function Home() {
   const store = readStore();
-  const allProducts = store.products;
+  const allProducts = store.products.map(({ fitOnImage, ...p }) => p);
   const categories = store.categories;
 
   const latestStyles = allProducts.filter(p => p.featured);

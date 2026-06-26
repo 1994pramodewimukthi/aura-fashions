@@ -6,7 +6,8 @@ import type { Product } from '@/lib/types';
 export async function GET(req: NextRequest) {
   req.cookies.get('dummy-no-cache');
   const store = readStore();
-  return NextResponse.json(store.products);
+  const cleanProducts = store.products.map(({ fitOnImage, ...p }) => p);
+  return NextResponse.json(cleanProducts);
 }
 
 export async function POST(req: NextRequest) {
